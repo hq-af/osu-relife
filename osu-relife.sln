@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osu-relife", "osu-relife\osu-relife.vcxproj", "{19BF22BC-ED76-4384-ABDF-EB2DF522399D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A562F6D6-09A9-4BD8-9B61-B923FF4817D6} = {A562F6D6-09A9-4BD8-9B61-B923FF4817D6}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pill", "pill\pill.vcxproj", "{A562F6D6-09A9-4BD8-9B61-B923FF4817D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19BF22BC-ED76-4384-ABDF-EB2DF522399D}.Release|x86.ActiveCfg = Release|Win32
+		{19BF22BC-ED76-4384-ABDF-EB2DF522399D}.Release|x86.Build.0 = Release|Win32
+		{A562F6D6-09A9-4BD8-9B61-B923FF4817D6}.Release|x86.ActiveCfg = Release|Win32
+		{A562F6D6-09A9-4BD8-9B61-B923FF4817D6}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9632CFF-BF36-42DB-9DB4-6296B4A68D73}
+	EndGlobalSection
+EndGlobal
