@@ -52,10 +52,13 @@ HRESULT __stdcall DetourWMIGet(
 	LONG plFlavor) {
 
 	//std::wcout << "called 'fastprox.dll@Get' : " << wszName << std::endl;
-	
+
 	auto hRet = fpsWMIGet(pThis, wszName, lFlags, pVal, pvtType, plFlavor);
 
-	if (wcscmp(wszName, L"Signature") == 0 || wcscmp(wszName, L"SerialNumber") == 0) {
+	if (wcscmp(wszName, L"Signature") == 0) {
+		VariantClear(pVal);
+	}
+	else if (wcscmp(wszName, L"SerialNumber") == 0) {
 		VariantClear(pVal);
 		pVal->vt = VT_BSTR;
 		pVal->bstrVal = GetSerialNumber();
