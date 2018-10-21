@@ -147,7 +147,7 @@ void Initialize_UI(HINSTANCE mod) {
 	MSG messages;
 	RegisterDLLWindowClass(L"RelifePill");
 	prnt_hWnd = FindWindow(L"Window Injected Into ClassName", L"Window Injected Into Caption");
-	HWND hwnd = CreateWindowEx(0, L"RelifePill", L"Osu-Relife v0.3 by hq.af <github.com/hq-af>", WS_EX_PALETTEWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 400, 250, prnt_hWnd, NULL, inj_hModule, NULL);
+	HWND hwnd = CreateWindowEx(0, L"RelifePill", L"Osu-Relife v0.4 by hq.af <github.com/hq-af>", WS_EX_PALETTEWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 400, 250, prnt_hWnd, NULL, inj_hModule, NULL);
 	ShowWindow(hwnd, SW_SHOWNORMAL);
 
 	messageBox = CreateWindowEx(0, L"RelifePill", L"Add profile", WS_EX_PALETTEWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 300, 150, hwnd, NULL, inj_hModule, NULL);
