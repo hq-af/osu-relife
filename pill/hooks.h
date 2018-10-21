@@ -8,6 +8,8 @@
 #include <iostream>
 #include <WbemCli.h>
 #include <Wincrypt.h>
+#include <WinTrust.h>
+#include <string>
 #include "../MinHook/MinHook.h"
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "../MinHook/libMinHook.x86.lib")
@@ -54,16 +56,8 @@ void WMIGet_Hook();
 void RegQuery_Hook();
 void AddrInfoW_Hook();
 
-
-//------------------ PlayGround
-
-
-//---------- s.H_CertFindCertificateInCRL
-typedef BOOL(__stdcall* CERTFINDCERTIFICATEINCRL)(PCCERT_CONTEXT, PCCRL_CONTEXT, DWORD, void*, PCRL_ENTRY*);
-BOOL __stdcall DetourCertFindCertificateInCRL(PCCERT_CONTEXT arg0, PCCRL_CONTEXT arg1, DWORD arg2, void* arg3, PCRL_ENTRY* arg4);
-void Hook_CertFindCertificateInCRL();
-//---------- e.H_CertFindCertificateInCRL
-
-
+typedef BOOL(__stdcall* CERTGETCERTIFICATECHAIN)(HCERTCHAINENGINE, PCCERT_CONTEXT, LPFILETIME, HCERTSTORE, PCERT_CHAIN_PARA, DWORD, LPVOID, CERT_CHAIN_CONTEXT**);
+BOOL __stdcall DetourCertGetCertificateChain(HCERTCHAINENGINE arg0, PCCERT_CONTEXT arg1, LPFILETIME arg2, HCERTSTORE arg3, PCERT_CHAIN_PARA arg4, DWORD arg5, LPVOID arg6, CERT_CHAIN_CONTEXT** arg7);
+void Hook_CertGetCertificateChain();
 
 #endif

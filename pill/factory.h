@@ -9,8 +9,11 @@
 #define MAX_MAC_COUNT 20
 #define MAX_HWID 128
 #define MAX_UNINSTALLID 36
+#define NB_SERV 8
+#define MAX_HOST 128
 
-
+extern const char* servers_labels[NB_SERV];
+extern const char* servers[NB_SERV];
 
 PIP_ADAPTER_ADDRESSES GetMAC();
 BSTR GetSerialNumber();
@@ -19,6 +22,7 @@ void Initialize_Factory();
 void SetSelected(int index);
 void DeleteSelected();
 void RefreshSelected();
+void SetServer(int serv);
 
 typedef struct profile {
 	bool selected;
@@ -26,6 +30,7 @@ typedef struct profile {
 	char mac[MAX_MAC];
 	char hwid[MAX_HWID];
 	char uninstallID[MAX_UNINSTALLID];
+	int serverID;
 	profile* next;
 } profile;
 
@@ -48,5 +53,7 @@ extern char* uninstallid;
 extern BSTR serial_number_bstr;
 extern int profilesCount;
 extern profile* first_profile;
+extern profile* last_selected;
+extern wchar_t server_host[MAX_HOST];
 
 #endif

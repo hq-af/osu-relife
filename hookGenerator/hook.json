@@ -1,6 +1,7 @@
 {
   "dllName": "crypt32.dll",
-  "methodName": "CertFindCertificateInCRL",
+  "methodName": "CertGetCertificateChain",
   "returnType": "BOOL",
-  "args": ["PCCERT_CONTEXT", "PCCRL_CONTEXT", "DWORD", "void*", "PCRL_ENTRY*"]
+  "args": ["HCERTCHAINENGINE", "PCCERT_CONTEXT", "LPFILETIME", "HCERTSTORE", "PCERT_CHAIN_PARA", "DWORD", "LPVOID", "PCCERT_CHAIN_CONTEXT*"]
 }
+

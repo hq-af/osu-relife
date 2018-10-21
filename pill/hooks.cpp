@@ -99,7 +99,6 @@ LSTATUS __stdcall DetourRegQueryValueExW(
 		}
 	}
 	
-
 	return hRet;
 }
 
@@ -118,26 +117,28 @@ INT32 __stdcall DetourGetAddrInfoW(
 
 	//std::wcout << "called 'WS2_32.dll@GetAddrInfoW' : " << pNodeName << std::endl;
 
-	//return fpsGetAddrInfoW(L"kawata.pw", pServiceName, pHints, ppResult);
-	return fpsGetAddrInfoW(pNodeName, pServiceName, pHints, ppResult);
+	if (last_selected->serverID == 0)
+		return fpsGetAddrInfoW(pNodeName, pServiceName, pHints, ppResult);
+
+	return fpsGetAddrInfoW(server_host, pServiceName, pHints, ppResult);
 }
 
+CERTGETCERTIFICATECHAIN fpsCertGetCertificateChain = NULL;
 
-//----------- PlayGround
-
-//---------- s.C_CertFindCertificateInCRL
-CERTFINDCERTIFICATEINCRL fpsCertFindCertificateInCRL = NULL;
-
-void Hook_CertFindCertificateInCRL() {
-	auto target = GetProcAddress(LoadLibrary(L"crypt32.dll"), "CertFindCertificateInCRL");
-	MH_CreateHook(target, &DetourCertFindCertificateInCRL, (LPVOID*)&fpsCertFindCertificateInCRL);
+void Hook_CertGetCertificateChain() {
+	auto target = GetProcAddress(LoadLibrary(L"crypt32.dll"), "CertGetCertificateChain");
+	MH_CreateHook(target, &DetourCertGetCertificateChain, (LPVOID*)&fpsCertGetCertificateChain);
 	MH_EnableHook(target);
-	std::cout << "created hook for 'crypt32.dll@CertFindCertificateInCRL'" << std::endl;
+	//std::cout << "created hook for 'crypt32.dll@CertGetCertificateChain'" << std::endl;
 }
 
-BOOL __stdcall DetourCertFindCertificateInCRL(PCCERT_CONTEXT arg0, PCCRL_CONTEXT arg1, DWORD arg2, void* arg3, PCRL_ENTRY* arg4) {
-	std::cout << "called 'crypt32.dll@CertFindCertificateInCRL'" << std::endl;
+BOOL __stdcall DetourCertGetCertificateChain(HCERTCHAINENGINE arg0, PCCERT_CONTEXT arg1, LPFILETIME arg2, HCERTSTORE arg3, PCERT_CHAIN_PARA arg4, DWORD arg5, LPVOID arg6, CERT_CHAIN_CONTEXT** arg7) {
+	//std::cout << "called 'crypt32.dll@CertGetCertificateChain'" << std::endl;
+	
+	auto ret = fpsCertGetCertificateChain(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
-	return fpsCertFindCertificateInCRL(arg0, arg1, arg2, arg3, arg4);
+	if (last_selected->serverID != 0)
+		(*arg7)->TrustStatus.dwErrorStatus = 0;
+
+	return ret;
 }
-//---------- e.C_CertFindCertificateInCRL

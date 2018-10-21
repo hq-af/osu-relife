@@ -7,6 +7,9 @@
 #include <time.h>
 #define BUFSIZE 4096
 
+const char* servers_labels[NB_SERV] = { "Bancho", "Kawata", "Ripple", "Akatsuki", "Akatsuki Relax", "Enjuu", "Enshi", "Gatari" };
+const char* servers[NB_SERV] = { "bancho", "kawata", "ripple", "akatsuki", "akatsukir", "enjuu", "enshi", "gatari" };
+
 char** mac_addresses;
 int mac_addresses_count;
 char* serial_number;
@@ -14,8 +17,10 @@ char* uninstallid;
 BSTR serial_number_bstr;
 int profilesCount = 0;
 LPTSTR real_path = NULL;
+wchar_t server_host[MAX_HOST];
 
 profile* first_profile = NULL;
+profile* last_selected = NULL;
 
 profile* GetProfiles() {
 	return first_profile;
@@ -24,8 +29,10 @@ profile* GetProfiles() {
 profile* GetSelectedProfile() {
 	profile* curr = first_profile;
 	while (curr) {
-		if (curr->selected)
+		if (curr->selected) {
+			last_selected = curr;
 			return curr;
+		}
 		curr = curr->next;
 	}
 
@@ -216,6 +223,15 @@ void Initialize_Factory() {
 				strcpy(current_profile->hwid, line.substr(2, line.length() - 1).c_str());
 			else if (line[0] == 'u')
 				strcpy(current_profile->uninstallID, line.substr(2, line.length() - 1).c_str());
+			else if (line[0] == 's') {
+				std::string servName = line.substr(2, line.length() - 1).c_str();
+				current_profile->serverID = 0;
+				for (int i=1; i<NB_SERV; i++)
+					if (strcmp(servName.c_str(), servers[i]) == 0){
+						current_profile->serverID = i;
+						break;
+					}
+			}
 		}
 	}
 
@@ -297,7 +313,8 @@ void SaveToDisk() {
 			profiles << (curr->selected ? ">" : "") << '[' << curr->name << ']' << std::endl
 				<< "m_" << curr->mac << std::endl
 				<< "h_" << curr->hwid << std::endl
-				<< "u_" << curr->uninstallID << std::endl << std::endl;
+				<< "u_" << curr->uninstallID << std::endl
+				<< "s_" << servers[curr->serverID] << std::endl << std::endl;
 
 			curr = curr->next;
 		}
@@ -357,4 +374,8 @@ void AddProfile(const char name[]) {
 	newp->selected = true;
 	profilesCount++;
 	RandomizeSelected();
+}
+
+void SetServer(int serv) {
+	GetSelectedProfile()->serverID = serv;
 }
