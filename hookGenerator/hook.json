@@ -1,7 +1,0 @@
-{
-  "dllName": "crypt32.dll",
-  "methodName": "CertGetCertificateChain",
-  "returnType": "BOOL",
-  "args": ["HCERTCHAINENGINE", "PCCERT_CONTEXT", "LPFILETIME", "HCERTSTORE", "PCERT_CHAIN_PARA", "DWORD", "LPVOID", "PCCERT_CHAIN_CONTEXT*"]
-}
-
