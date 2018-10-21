@@ -1,6 +1,6 @@
 [Setup]
 AppName=Osu-Relife
-AppVersion=0.3
+AppVersion=0.5
 DefaultDirName={pf}\Osu-Relife
 DefaultGroupName=OsuRelife
 UninstallDisplayIcon={app}\osu-relife.exe
