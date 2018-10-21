@@ -1,0 +1,6 @@
+{
+  "dllName": "crypt32.dll",
+  "methodName": "CertFindCertificateInCRL",
+  "returnType": "BOOL",
+  "args": ["PCCERT_CONTEXT", "PCCRL_CONTEXT", "DWORD", "void*", "PCRL_ENTRY*"]
+}

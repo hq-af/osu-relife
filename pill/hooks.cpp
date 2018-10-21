@@ -4,6 +4,7 @@
 GETADAPTERSADDRESSES fpsGetAdaptersAddresses = NULL;
 WMIGET fpsWMIGet = NULL;
 REGQUERYVALUEEXW fpsRegQuery = NULL;
+GETADDRINFOW fpsGetAddrInfoW = NULL;
 
 void Initialize_Hooks() {
 	MH_Initialize();
@@ -101,3 +102,42 @@ LSTATUS __stdcall DetourRegQueryValueExW(
 
 	return hRet;
 }
+
+void AddrInfoW_Hook() {
+	auto target = GetProcAddress(LoadLibrary(L"WS2_32.dll"), "GetAddrInfoW");
+	MH_CreateHook(target, &DetourGetAddrInfoW, (LPVOID*)&fpsGetAddrInfoW);
+	MH_EnableHook(target);
+	//std::cout << "created hook for 'WS2_32.dll@GetAddrInfoW'" << std::endl;
+}
+
+INT32 __stdcall DetourGetAddrInfoW(
+	PCWSTR          pNodeName,
+	PCWSTR          pServiceName,
+	const ADDRINFOW *pHints,
+	PADDRINFOW      *ppResult) {
+
+	//std::wcout << "called 'WS2_32.dll@GetAddrInfoW' : " << pNodeName << std::endl;
+
+	//return fpsGetAddrInfoW(L"kawata.pw", pServiceName, pHints, ppResult);
+	return fpsGetAddrInfoW(pNodeName, pServiceName, pHints, ppResult);
+}
+
+
+//----------- PlayGround
+
+//---------- s.C_CertFindCertificateInCRL
+CERTFINDCERTIFICATEINCRL fpsCertFindCertificateInCRL = NULL;
+
+void Hook_CertFindCertificateInCRL() {
+	auto target = GetProcAddress(LoadLibrary(L"crypt32.dll"), "CertFindCertificateInCRL");
+	MH_CreateHook(target, &DetourCertFindCertificateInCRL, (LPVOID*)&fpsCertFindCertificateInCRL);
+	MH_EnableHook(target);
+	std::cout << "created hook for 'crypt32.dll@CertFindCertificateInCRL'" << std::endl;
+}
+
+BOOL __stdcall DetourCertFindCertificateInCRL(PCCERT_CONTEXT arg0, PCCRL_CONTEXT arg1, DWORD arg2, void* arg3, PCRL_ENTRY* arg4) {
+	std::cout << "called 'crypt32.dll@CertFindCertificateInCRL'" << std::endl;
+
+	return fpsCertFindCertificateInCRL(arg0, arg1, arg2, arg3, arg4);
+}
+//---------- e.C_CertFindCertificateInCRL
