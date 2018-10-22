@@ -6,6 +6,7 @@ Features :
 - Multiple profiles
 - Select profile on game launch
 - Generate random profiles
+- Play on private servers (Kawata/Ripple/Akatsuki/Gatari...)
 - Support every osu! version
 - Should work with other tools
 
